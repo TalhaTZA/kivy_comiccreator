@@ -40,10 +40,10 @@ class GeneralOptions(BoxLayout):
     
     def on_rotation(self,instance,value):
         for child in self.drawing_space.children:
-            if child.selected and child.touched:
+            if child.selected and not child.touched:
                 child.rotation=value
     
     def on_scale(self,instance,value):
         for child in self.drawing_space.children:
-            if child.selected and child.touched:
+            if child.selected and not child.touched:
                 child.scale=value
