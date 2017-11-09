@@ -1,10 +1,12 @@
 from kivy.uix.boxlayout import BoxLayout
-from kivy.properties import NumericProperty, ListProperty
+from kivy.properties import NumericProperty , ListProperty
 
 
 class GeneralOptions(BoxLayout):
     group_mode=False
     translation=ListProperty(None)
+    scale=NumericProperty(0)
+    rotation=NumericProperty(0)
 
     def clear(self,instance):
         self.drawing_space.clear_widgets()
@@ -33,5 +35,15 @@ class GeneralOptions(BoxLayout):
 
     def on_translation(self,instance,value):
         for child in self.drawing_space.children:
-            if child.selected:
+            if child.selected and not child.touched:
                 child.translate(*self.translation)
+    
+    def on_rotation(self,instance,value):
+        for child in self.drawing_space.children:
+            if child.selected and child.touched:
+                child.rotation=value
+    
+    def on_scale(self,instance,value):
+        for child in self.drawing_space.children:
+            if child.selected and child.touched:
+                child.scale=value
