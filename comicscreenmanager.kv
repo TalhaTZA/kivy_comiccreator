@@ -1,8 +1,11 @@
 #: kivy 1.10.0
 #: import FadeTransition kivy.uix.screenmanager.FadeTransition
+#: import SwapTransition kivy.uix.screenmanager.SwapTransition
+#: import SlideTransition kivy.uix.screenmanager.SlideTransition
+#: import WipeTransition kivy.uix.screenmanager.WipeTransition
 
 <ComicScreenManager>:
-    transition: FadeTransition()
+    transition: SwapTransition()
     color_picker: _color_picker
     ComicCreator:
     Screen:
@@ -11,6 +14,7 @@
             id: _color_picker
             color: 0,.3,.6,1
         Button:
+            color: 1,0,0,1
             text: "Select"
             pos_hint: {'center_x':.75 , 'center_y': .05}
             size_hint: None,None

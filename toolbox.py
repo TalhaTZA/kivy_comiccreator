@@ -1,13 +1,13 @@
 import kivy
 import math
-from kivy.graphics import Line
+from kivy.graphics import Line , Color
 from kivy.uix.togglebutton import ToggleButton
 from comicwidgets import StickMan , DraggableWidget
 
 class ToolButton(ToggleButton):
     def on_touch_down(self,touch):
         ds=self.parent.drawing_space
-        if self.state== 'down' and ds.collide_point(touch.x,touch.y):
+        if self.state== 'down' and ds.parent.collide_point(touch.x,touch.y):
             (x,y) = ds.to_widget(touch.x,touch.y)
             self.draw(ds,x,y)
             return True
@@ -20,34 +20,40 @@ class ToolStickMan(ToolButton):
     def draw(self,ds,x,y):
         sm=StickMan(width=48,height=48)
         sm.center=(x,y)
+        screen_manager=self.parent.comic_creator.manager
+        color_picker=screen_manager.color_picker
+        sm.canvas.before.add(Color(*color_picker.color)) 
         ds.add_widget(sm)
 
 class ToolFigure(ToolButton):
     def draw(self,ds,x,y):
         (self.ix,self.iy) = (x,y)
+        screen_manager=self.parent.comic_creator.manager
+        color_picker=screen_manager.color_picker
         with ds.canvas:
+            Color(*color_picker.color)
             self.figure=self.create_figure(x,y,x+1,y+1)
             ds.bind(on_touch_move=self.update_figure)
             ds.bind(on_touch_up=self.end_figure)
         
     def update_figure(self,ds,touch):
-        if ds.collide_point(touch.x,touch.y):
-            (x,y)=ds.to_widget(touch.x,touch.y)
-            ds.canvas.remove(self.figure)
-            with ds.canvas:
-                self.figure=self.create_figure(self.ix,self.iy,x,y)
+        ds.canvas.remove(self.figure)
+        with ds.canvas:
+            self.figure=self.create_figure(self.ix,self.iy,touch.x,touch.y)
     
     def end_figure(self,ds,touch):
         ds.unbind(on_touch_move=self.update_figure)
         ds.unbind(on_touch_up=self.end_figure)
         ds.canvas.remove(self.figure)
-        (fx,fy) = ds.to_widget(touch.x,touch.y)
-        self.widgetsize(ds,self.ix,self.iy,fx,fy)
+        self.widgetsize(ds,self.ix,self.iy,touch.x,touch.y)
     
     def widgetsize(self,ds,ix,iy,fx,fy):
         widget=self.create_widget(ix,iy,fx,fy)
         (ix,iy) = widget.to_local(ix,iy,relative=True)
         (fx,fy) = widget.to_local(fx,fy,relative=True)
+        screen_manager=self.parent.comic_creator.manager
+        color_picker=screen_manager.color_picker
+        widget.canvas.add(Color(*color_picker.color))
         widget.canvas.add(self.create_figure(ix,iy,fx,fy))
         ds.add_widget(widget)
     
