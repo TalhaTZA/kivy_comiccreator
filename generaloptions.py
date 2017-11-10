@@ -27,7 +27,10 @@ class GeneralOptions(BoxLayout):
         self.comic_creator.manager.current = 'colorscreen'
     
     def gestures(self,instance,value):
-        pass
+        if value== 'down':
+            self.drawing_space.activate()
+        else:
+            self.drawing_space.deactivate()
     
     def unselect_all(self):
         for child in self.drawing_space.children:

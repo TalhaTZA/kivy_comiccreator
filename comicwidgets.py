@@ -15,7 +15,7 @@ class DraggableWidget(Scatter):
             self.touched=True
             self.select()
             return super().on_touch_down(touch)
-            return True
+            #return True
         return super().on_touch_down(touch)
 
     def select(self):
