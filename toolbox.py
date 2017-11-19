@@ -1,8 +1,9 @@
 import kivy
 import math
-from kivy.graphics import Line , Color
+from kivy.graphics import  Color
 from kivy.uix.togglebutton import ToggleButton
 from comicwidgets import StickMan , DraggableWidget
+from style import NewLine as Line
 
 class ToolButton(ToggleButton):
     def on_touch_down(self,touch):
