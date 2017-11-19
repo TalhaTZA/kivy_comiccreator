@@ -13,8 +13,15 @@ class GeneralOptions(BoxLayout):
 
     def remove(self,instance):
         ds=self.drawing_space
+        btn_st=self.group_button.state
         if len(ds.children)>0:
-            ds.remove_widget(ds.children[0])
+            if btn_st=='down':
+                for child in ds.children:
+                    if child.selected:
+                        ds.remove_widget(child)
+                        self.remove(instance)
+            if btn_st=='normal':
+                ds.remove_widget(ds.children[0])
     
     def group(self,instance,value):
         if value=='down':

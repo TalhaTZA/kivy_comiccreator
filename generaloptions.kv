@@ -2,6 +2,7 @@
 #: import generaloptions generaloptions
 
 <GeneralOptions@BoxLayout>:
+    group_button: _group_button
     orientation: 'horizontal'
     padding: 2
     Button:
@@ -11,6 +12,7 @@
         text: 'Remove'
         on_release: root.remove(*args)
     ToggleButton:
+        id: _group_button
         text: 'Group'
         on_state: root.group(*args)
     Button:
